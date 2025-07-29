@@ -1,0 +1,11 @@
+lib/*
+bin/*
+.idea/*
+venv
+log.txt
+*.pyc
+
+# TTS相关
+tts_output/
+
+.augment/

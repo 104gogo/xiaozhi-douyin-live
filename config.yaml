@@ -1,0 +1,300 @@
+# 具体处理时选择的模块(The module selected for specific processing)
+selected_module:
+  TTS: EdgeTTS
+
+# 是否删除生成的音频文件
+delete_audio: true
+
+TTS:
+  # 当前支持的type为edge、doubao，可自行适配
+  EdgeTTS:
+    # 定义TTS API类型
+    type: edge
+    voice: zh-CN-XiaoxiaoNeural
+    output_dir: tmp/
+  DoubaoTTS:
+    # 定义TTS API类型
+    type: doubao
+    # 火山引擎语音合成服务，需要先在火山引擎控制台创建应用并获取appid和access_token
+    # 山引擎语音一定要购买花钱，起步价30元，就有100并发了。如果用免费的只有2个并发，会经常报tts错误
+    # 购买服务后，购买免费的音色后，可能要等半小时左右，才能使用。
+    # 普通音色在这里开通：https://console.volcengine.com/speech/service/8
+    # 湾湾小何音色在这里开通：https://console.volcengine.com/speech/service/10007，开通后将下面的voice设置成zh_female_wanwanxiaohe_moon_bigtts
+    api_url: https://openspeech.bytedance.com/api/v1/tts
+    voice: BV001_streaming
+    output_dir: tmp/
+    authorization: "Bearer;"
+    appid: 你的火山引擎语音合成服务appid
+    access_token: 你的火山引擎语音合成服务access_token
+    cluster: volcano_tts
+    speed_ratio: 1.0
+    volume_ratio: 1.0
+    pitch_ratio: 1.0
+  #火山tts，支持双向流式tts
+  HuoshanDoubleStreamTTS:
+    type: huoshan_double_stream
+    # 访问 https://console.volcengine.com/speech/service/10007 开通语音合成大模型，购买音色
+    # 在页面底部获取appid和access_token
+    # 资源ID固定为：volc.service_type.10029（大模型语音合成及混音）
+    # 如果是机智云，把接口地址换成wss://bytedance.gizwitsapi.com/api/v3/tts/bidirection
+    # 机智云不需要天填 appid
+    ws_url: wss://openspeech.bytedance.com/api/v3/tts/bidirection
+    appid: 你的火山引擎语音合成服务appid
+    access_token: 你的火山引擎语音合成服务access_token
+    resource_id: volc.service_type.10029
+    speaker: zh_female_wanwanxiaohe_moon_bigtts
+  CosyVoiceSiliconflow:
+    type: siliconflow
+    # 硅基流动TTS
+    # token申请地址 https://cloud.siliconflow.cn/account/ak
+    model: FunAudioLLM/CosyVoice2-0.5B
+    voice: FunAudioLLM/CosyVoice2-0.5B:alex
+    output_dir: tmp/
+    access_token: 你的硅基流动API密钥
+    response_format: wav
+  CozeCnTTS:
+    type: cozecn
+    # COZECN TTS
+    # token申请地址 https://www.coze.cn/open/oauth/pats
+    voice: 7426720361733046281
+    output_dir: tmp/
+    access_token: 你的coze web key
+    response_format: wav
+  VolcesAiGatewayTTS:
+    type: openai
+    # 火山引擎 - 边缘大模型网关
+    # 先开通服务，打开以下网址，创建网关访问密钥，搜索并勾选 Doubao-语音合成 ，开通
+    # 如果需要使用边缘大模型网关提供的 LLM，一并勾选 Doubao-pro-32k-functioncall ，另见 LLM.VolcesAiGatewayLLM 配置
+    # https://console.volcengine.com/vei/aigateway/
+    # 开通后，进入这里获取密钥：https://console.volcengine.com/vei/aigateway/tokens-list
+    api_key: 你的网关访问密钥
+    api_url: https://ai-gateway.vei.volces.com/v1/audio/speech
+    model: doubao-tts
+    # 音色列表见 https://www.volcengine.com/docs/6561/1257544
+    voice: zh_male_shaonianzixin_moon_bigtts
+    speed: 1
+    output_dir: tmp/
+  FishSpeech:
+    # 参照教程：https://github.com/xinnan-tech/xiaozhi-esp32-server/blob/main/docs/fish-speech-integration.md
+    type: fishspeech
+    output_dir: tmp/
+    response_format: wav
+    reference_id: null
+    reference_audio: ["config/assets/wakeup_words.wav",]
+    reference_text: ["哈啰啊，我是小智啦，声音好听的台湾女孩一枚，超开心认识你耶，最近在忙啥，别忘了给我来点有趣的料哦，我超爱听八卦的啦",]
+    normalize: true
+    max_new_tokens: 1024
+    chunk_length: 200
+    top_p: 0.7
+    repetition_penalty: 1.2
+    temperature: 0.7
+    streaming: false
+    use_memory_cache: "on"
+    seed: null
+    channels: 1
+    rate: 44100
+    api_key: "你的api_key"
+    api_url: "http://127.0.0.1:8080/v1/tts"
+  GPT_SOVITS_V2:
+    # 定义TTS API类型
+    #启动tts方法：
+    #python api_v2.py -a 127.0.0.1 -p 9880 -c GPT_SoVITS/configs/demo.yaml
+    type: gpt_sovits_v2
+    url: "http://127.0.0.1:9880/tts"
+    output_dir: tmp/
+    text_lang: "auto"
+    ref_audio_path: "demo.wav"
+    prompt_text: ""
+    prompt_lang: "zh"
+    top_k: 5
+    top_p: 1
+    temperature: 1
+    text_split_method: "cut0"
+    batch_size: 1
+    batch_threshold: 0.75
+    split_bucket: true
+    return_fragment: false
+    speed_factor: 1.0
+    streaming_mode: false
+    seed: -1
+    parallel_infer: true
+    repetition_penalty: 1.35
+    aux_ref_audio_paths: []
+  GPT_SOVITS_V3:
+    # 定义TTS API类型 GPT-SoVITS-v3lora-20250228
+    #启动tts方法：
+    #python api.py
+    type: gpt_sovits_v3
+    url: "http://127.0.0.1:9880"
+    output_dir: tmp/
+    text_language: "auto"
+    refer_wav_path: "caixukun.wav"
+    prompt_language: "zh"
+    prompt_text: ""
+    top_k: 15
+    top_p: 1.0
+    temperature: 1.0
+    cut_punc: ""
+    speed: 1.0
+    inp_refs: []
+    sample_steps: 32
+    if_sr: false
+  MinimaxTTS:
+    # Minimax语音合成服务，需要先在minimax平台创建账户充值，并获取登录信息
+    # 平台地址：https://platform.minimaxi.com/
+    # 充值地址：https://platform.minimaxi.com/user-center/payment/balance
+    # group_id地址：https://platform.minimaxi.com/user-center/basic-information
+    # api_key地址：https://platform.minimaxi.com/user-center/basic-information/interface-key
+    # 定义TTS API类型
+    type: minimax
+    output_dir: tmp/
+    group_id: 你的minimax平台groupID
+    api_key: 你的minimax平台接口密钥
+    model: "speech-01-turbo"
+    # 此处设置将优先于voice_setting中voice_id的设置；如都不设置，默认为 female-shaonv
+    voice_id: "female-shaonv"
+    # 以下可不用设置，使用默认设置
+    # voice_setting:
+    #     voice_id: "male-qn-qingse"
+    #     speed: 1
+    #     vol: 1
+    #     pitch: 0
+    #     emotion: "happy"
+    # pronunciation_dict:
+    #     tone:
+    #       - "处理/(chu3)(li3)"
+    #       - "危险/dangerous"
+    # audio_setting:
+    #     sample_rate: 32000
+    #     bitrate: 128000
+    #     format: "mp3"
+    #     channel: 1
+    # timber_weights:
+    #   -
+    #     voice_id: male-qn-qingse
+    #     weight: 1
+    #   -
+    #     voice_id: female-shaonv
+    #     weight: 1
+    # language_boost: auto
+  AliyunTTS:
+    # 阿里云智能语音交互服务，需要先在阿里云平台开通服务，然后获取验证信息
+    # 平台地址：https://nls-portal.console.aliyun.com/
+    # appkey地址：https://nls-portal.console.aliyun.com/applist
+    # token地址：https://nls-portal.console.aliyun.com/overview
+    # 定义TTS API类型
+    type: aliyun
+    output_dir: tmp/
+    appkey: 5o2JosSYolqXBNAb
+    token: fe0c974a47e64b489cdf2f9d0cc80adf
+    voice: xiaoyun
+    access_key_id: 
+    access_key_secret: 
+
+    # 以下可不用设置，使用默认设置
+    # format: wav
+    # sample_rate: 16000
+    # volume: 50
+    # speech_rate: 0
+    # pitch_rate: 0
+    # 添加 302.ai TTS 配置
+    # token申请地址：https://dash.302.ai/
+  TencentTTS:
+    # 腾讯云智能语音交互服务，需要先在腾讯云平台开通服务
+    # appid、secret_id、secret_key申请地址：https://console.cloud.tencent.com/cam/capi
+    # 免费领取资源：https://console.cloud.tencent.com/tts/resourcebundle
+    type: tencent
+    output_dir: tmp/
+    appid: 你的腾讯云AppId
+    secret_id: 你的腾讯云SecretID
+    secret_key: 你的腾讯云SecretKey
+    region: ap-guangzhou
+    voice: 101001
+
+  TTS302AI:
+    # 302AI语音合成服务，需要先在302平台创建账户充值，并获取密钥信息
+    # 获取api_keyn路径：https://dash.302.ai/apis/list
+    # 价格，$35/百万字符。火山原版¥450元/百万字符
+    type: doubao
+    api_url: https://api.302ai.cn/doubao/tts_hd
+    authorization: "Bearer "
+    # 湾湾小何音色
+    voice: "zh_female_wanwanxiaohe_moon_bigtts"
+    output_dir: tmp/
+    access_token: "你的302API密钥"
+  GizwitsTTS:
+    type: doubao
+    # 火山引擎作为基座，可以完全使用企业级火山引擎语音合成服务
+    # 前一万名注册的用户，将送5元体验金额
+    # 获取API Key地址：https://agentrouter.gizwitsapi.com/panel/token
+    api_url: https://bytedance.gizwitsapi.com/api/v1/tts
+    authorization: "Bearer "
+    # 湾湾小何音色
+    voice: "zh_female_wanwanxiaohe_moon_bigtts"
+    output_dir: tmp/
+    access_token: "你的机智云API key"
+  ACGNTTS:
+    #在线网址：https://acgn.ttson.cn/
+    #token购买：www.ttson.cn
+    #开发相关疑问请提交至网站上的qq
+    #角色id获取地址：ctrl+f快速检索角色——网站管理者不允许发布,可询问网站管理者
+    #各参数意义见开发文档：https://www.yuque.com/alexuh/skmti9/wm6taqislegb02gd?singleDoc#
+    type: ttson
+    token: your_token
+    voice_id: 1695
+    speed_factor: 1
+    pitch_factor: 0
+    volume_change_dB: 0
+    to_lang: ZH
+    url: https://u95167-bd74-2aef8085.westx.seetacloud.com:8443/flashsummary/tts?token=
+    format: mp3
+    output_dir: tmp/
+    emotion: 1
+  OpenAITTS:
+    # openai官方文本转语音服务，可支持全球大多数语种
+    type: openai
+    # 你可以在这里获取到 api key
+    # https://platform.openai.com/api-keys
+    api_key: 你的openai api key
+    # 国内需要使用代理
+    api_url: https://api.openai.com/v1/audio/speech
+    # 可选tts-1或tts-1-hd，tts-1速度更快tts-1-hd质量更好
+    model: tts-1
+    # 演讲者，可选alloy, echo, fable, onyx, nova, shimmer
+    voice: onyx
+    # 语速范围0.25-4.0
+    speed: 1
+    output_dir: tmp/
+  CustomTTS:
+    # 自定义的TTS接口服务，请求参数可自定义，可接入众多TTS服务
+    # 以本地部署的KokoroTTS为例
+    # 如果只有cpu运行：docker run -p 8880:8880 ghcr.io/remsky/kokoro-fastapi-cpu:latest
+    # 如果只有gpu运行：docker run --gpus all -p 8880:8880 ghcr.io/remsky/kokoro-fastapi-gpu:latest
+    # 要求接口使用POST方式请求，并返回音频文件
+    type: custom
+    method: POST
+    url: "http://127.0.0.1:8880/v1/audio/speech"
+    params: # 自定义请求参数
+      input: "{prompt_text}"
+      response_format: "mp3"
+      download_format: "mp3"
+      voice: "zf_xiaoxiao"
+      lang_code: "z"
+      return_download_link: true
+      speed: 1
+      stream: false
+    headers: # 自定义请求头
+      # Authorization: Bearer xxxx
+    format: mp3 # 接口返回的音频格式
+    output_dir: tmp/
+  LinkeraiTTS:
+    type: linkerai
+    api_url: https://tts.linkerai.cn/tts
+    audio_format: "pcm"
+    # 默认的access_token供大家测试时免费使用的，此access_token请勿用于商业用途
+    # 如果效果不错，可自行申请token，申请地址：https://linkerai.cn
+    # 各参数意义见开发文档：https://tts.linkerai.cn/docs
+    # 支持声音克隆，可自行上传音频，填入voice参数，voice参数为空时，使用默认声音
+    access_token: "U4YdYXVfpwWnk2t5Gp822zWPCuORyeJL"
+    voice: "OUeAo1mhq6IBExi"
+    output_dir: tmp/

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+            }
+            .main {
+                width: 600px;
+                height: 300px;
+                overflow: scroll;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                /* 必须要声明：不然高度只会一点点，导致超过leftLabel高度的内容背景不生效 */
+                align-items: flex-start;
+            }
+
+            .topLabel {
+                position: sticky;
+                top: 0;
+                background-color: #39ae2b;
+                height: 40px;
+                line-height: 40px;
+                color: white;
+            }
+
+            .top {
+                border: 0;
+                border-collapse: collapse;
+            }
+
+            table {
+                width: 500px;
+                height: 400px;
+                table-layout: fixed;
+            }
+
+            .leftLabel {
+                position: sticky;
+                left: 0;
+                margin-top: 40px;
+                background-color: #d05858;
+                color: white;
+            }
+
+            .label {
+                width: 50px;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+            }
+
+            tr {
+                height: 40px;
+                line-height: 40px;
+            }
+
+            th,
+            td {
+                width: 60px;
+                height: 40px;
+                white-space: nowrap;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main">
+            <!-- 左侧label -->
+            <div class="leftLabel">
+                <div class="label">00:00</div>
+                <div class="label">01:00</div>
+                <div class="label">02:00</div>
+                <div class="label">03:00</div>
+                <div class="label">04:00</div>
+                <div class="label">05:00</div>
+                <div class="label">06:00</div>
+                <div class="label">07:00</div>
+                <div class="label">08:00</div>
+                <div class="label">09:00</div>
+                <div class="label">10:00</div>
+                <div class="label">11:00</div>
+                <div class="label">12:00</div>
+                <div class="label">13:00</div>
+                <div class="label">14:00</div>
+                <div class="label">15:00</div>
+                <div class="label">16:00</div>
+                <div class="label">17:00</div>
+                <div class="label">18:00</div>
+                <div class="label">19:00</div>
+                <div class="label">20:00</div>
+                <div class="label">21:00</div>
+                <div class="label">22:00</div>
+                <div class="label">23:00</div>
+                <div class="label">24:00</div>
+            </div>
+            <!-- 右侧内容：并设置表格单元格之间的间距为0-->
+            <table cellspacing="0">
+                <thead class="topLabel">
+                    <tr class="topBox">
+                        <th class="label top">1号</th>
+                        <th class="label top">2号</th>
+                        <th class="label top">3号</th>
+                        <th class="label top">4号</th>
+                        <th class="label top">5号</th>
+                        <th class="label top">6号</th>
+                        <th class="label top">7号</th>
+                        <th class="label top">8号</th>
+                        <th class="label top">9号</th>
+                        <th class="label top">10号</th>
+                        <th class="label top">11号</th>
+                        <th class="label top">12号</th>
+                        <th class="label top">13号</th>
+                        <th class="label top">14号</th>
+                        <th class="label top">15号</th>
+                        <th class="label top">16号</th>
+                        <th class="label top">17号</th>
+                        <th class="label top">18号</th>
+                        <th class="label top">19号</th>
+                        <th class="label top">20号</th>
+                        <th class="label top">21号</th>
+                        <th class="label top">22号</th>
+                        <th class="label top">23号</th>
+                        <th class="label top">24号</th>
+                        <th class="label top">25号</th>
+                    </tr>
+                </thead>
+                <tbody cellspacing="0">
+                    <tr>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                    </tr>
+                    <tr>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                    </tr>
+                    <tr>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                    </tr>
+                    <tr>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                    </tr>
+                    <tr>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                    </tr>
+                    <tr>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                    </tr>
+                    <tr>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                        <td>物理</td>
+                        <td>地理</td>
+                        <td>音乐</td>
+                        <td>语文</td>
+                        <td>数学</td>
+                        <td>英语</td>
+                        <td>体育</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
