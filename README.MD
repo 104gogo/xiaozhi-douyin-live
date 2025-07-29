@@ -6,9 +6,23 @@
 # 环境大于3.6应该都可以
 
 ```
-python 3.9 
+conda remove -n xiaozhi-douyin-live --all -y
+conda create -n xiaozhi-douyin-live python=3.10 -y
+conda activate xiaozhi-douyin-live
+
+# 添加清华源通道
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
+
+conda install libopus -y
+
+pip install -r requirements.txt
 ```
-附上windows的python3.9.2安装包：https://wwd.lanzouq.com/i6AEm02zzppi
+
+```
+python main.py
+```
 
 
 # 抖音直播桌面版  
