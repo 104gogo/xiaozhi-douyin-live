@@ -473,13 +473,18 @@ class GlobalVal(object):
         content = filtered_content
         logger.info(f"✅ 内容过滤通过 - 过滤后内容: {content}")
         
+        # 提取用户名并格式化TTS内容
+        user_name = message_data.get('user', {}).get('nickName', '未知用户') if message_data else '未知用户'
+        tts_content = f"用户：{user_name}，发送弹幕：{content}"
+        logger.info(f"🎤 TTS内容格式化完成 - 用户: {user_name}, 完整内容: {tts_content}")
+        
         # 检查缓存，如果命中则立即存储
         cache_enabled = TTS_CACHE_SIZE > 0
         if cache_enabled:
-            cached_result = _tts_cache.get(content)
+            cached_result = _tts_cache.get(tts_content)
             if cached_result:
                 audio_datas, audio_duration, audio_size = cached_result
-                logger.info(f"📦 TTS缓存命中，立即存储消息 - 内容: {content}")
+                logger.info(f"📦 TTS缓存命中，立即存储消息 - 内容: {tts_content}")
                 
                 # 创建完整的消息对象并立即存储
                 message_with_timestamp = {
@@ -495,21 +500,21 @@ class GlobalVal(object):
                     message_array.insert(0, message_with_timestamp)
                     if len(message_array) > cls.MAX_MESSAGE_COUNT:
                         message_array.pop()
-                    logger.info(f"💾 缓存消息已存储 - 内容: {content}, 数组长度: {len(message_array)}")
+                    logger.info(f"💾 缓存消息已存储 - 内容: {tts_content}, 数组长度: {len(message_array)}")
                 return
         
         # 异步提交TTS任务（不立即存储消息，等TTS完成后再存储）
         task_id = _async_tts_manager.submit_tts_task(
             message_id=None,  # 不需要消息ID，因为不预先存储
-            content=content,
+            content=tts_content,
             message_data=message_data,
             message_array=message_array
         )
         
         if task_id:
-            logger.info(f"🚀 异步TTS任务已提交，等待完成后存储 - 内容: {content}, 任务ID: {task_id[:8]}")
+            logger.info(f"🚀 异步TTS任务已提交，等待完成后存储 - 内容: {tts_content}, 任务ID: {task_id[:8]}")
         else:
-            logger.warning(f"⚠️ TTS任务提交失败（队列已满），消息未存储 - 内容: {content}")
+            logger.warning(f"⚠️ TTS任务提交失败（队列已满），消息未存储 - 内容: {tts_content}")
             # 任务提交失败，不存储消息
 
 
