@@ -1,11 +1,8 @@
-# 直播原理学习研究
+# 运行步骤
 
-欢迎参观我的CSDN博客：[我的CSDN博客，阅读量过260W，粉丝过3W](https://blog.csdn.net/weixin_44786530?spm=1000.2115.3001.5343)  
-欢迎参观我的掘金博客：[我的掘金博客，阅读量过100，粉丝2个](https://juejin.cn/user/70007368988926)
-
-# 环境大于3.6应该都可以
-
+## 安装依赖
 ```
+# 创建虚拟环境
 conda remove -n xiaozhi-douyin-live --all -y
 conda create -n xiaozhi-douyin-live python=3.10 -y
 conda activate xiaozhi-douyin-live
@@ -20,32 +17,31 @@ conda install libopus -y
 pip install -r requirements.txt
 ```
 
+## 修改配置
+1. 在 config.py 文件中修改直播间
+```
+LIVE_ROOM_URL = "https://live.douyin.com/336192654813"
+```
+
+2. 在 config.py 文件中修改自定义话题列表（如果没有弹幕，自己找话题说）
+```
+# 自定义话题列表配置
+CUSTOM_TOPICS = [
+    "继续讲解产品如何使用",
+    "讲解一下产品功能",
+    "为什么要购买防噎仪",
+    "水呛到了也可以使用",
+    "小孩子能不能用防噎仪",
+    "今天购买送了什么",
+    "库存紧张了，6件套套装仅有18套，完了后就需要另外购买",
+    "会划破喉咙吗",
+    "会不会对内脏口腔有伤害"
+]
+```
+
+## 运行
 ```
 python main.py
 ```
 
 
-# 抖音直播桌面版  
-LiveBox是一个抖音直播桌面版本，输入抖音直播地址，就可以安安静静看直播和弹幕消息，拒绝消费，冷静看播。
-特点：  
-1.超级轻量，只有5M，不占内存，不占CPU，不占GPU，不占硬盘。
-2.未来会增加多窗口支持，和登录支持，还可以自动化抢购和抢福袋等功能。  
-仓库地址：https://github.com/Sjj1024/LiveBox  
-桌面安装包下载地址：  
-https://github.com/Sjj1024/LiveBox/releases
-
-LiveBox桌面版展示：
-![img.png](assets/img.png)
-![img.png](assets/img6.png)
-
-
-# PakePlus项目介绍
-PakePlus项目：Turn any webpage into a desktop app and mobile app with Rust.
-利用 Rust 轻松构建轻量级多端桌面应用和多端手机应用，使用介绍：https://sjj1024.github.io/PakePlus/
-只需要9分钟就可以将任何网站打包成多端应用，仓库地址：https://github.com/Sjj1024/PakePlus  
-PakePlus展示：
-![img.png](assets/pakeplus.png)
-
-
-# 注意注意
-注意：这只是Python学习研究直播技术的仓库，不是黑客。请勿用于非法用途。一切违法行为后果自负！
