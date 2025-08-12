@@ -441,91 +441,31 @@ class GlobalVal(object):
             message_array.pop()  # 移除最旧的消息
 
     @classmethod
-    def _add_chat_message_with_tts_async(cls, message_array, message_data):
-        """异步处理TTS的聊天消息添加方法"""
+    def _add_chat_message(cls, message_array, message_data):
+        """处理聊天消息添加方法（移除TTS处理）"""
         # 添加处理状态日志
         content_preview = message_data.get('content', '')[:30] if message_data else ''
-        logger.info(f"⚡ 进入异步TTS处理流程: {content_preview}")
+        logger.info(f"📝 进入聊天消息处理流程: {content_preview}")
         
-        # TTS节流控制：检查调用频率（基于提交时间，不是完成时间）
-        current_time = time.time()
-        with cls._lock:
-            time_since_last = current_time - cls._last_tts_time
-            if time_since_last < cls._tts_throttle_interval:
-                logger.info(f"🚫 TTS提交频率限制，跳过处理（距离上次提交 {time_since_last:.2f}s < {cls._tts_throttle_interval}s）- 内容: {content_preview}")
-                return
-            # 立即更新时间戳，避免短时间内重复提交
-            cls._last_tts_time = current_time
-            logger.info(f"✅ 通过频率检查，继续处理 - 内容: {content_preview}")
-        
-        # 对内容进行过滤处理
+        # 基本内容验证
         content = message_data.get('content', '') if message_data else ''
         if not content or not content.strip():
             logger.info(f"❌ 内容为空，消息被丢弃 - 原始内容: {content}")
             return
             
-        logger.info(f"🔍 开始内容过滤 - 原始内容: {content}")
-        filtered_content, is_valid = filter_content_for_tts(content)
-        if not is_valid:
-            logger.info(f"❌ 内容过滤失败，消息被丢弃 - 原始内容: {content}")
-            return
+        logger.info(f"✅ 内容验证通过 - 内容: {content}")
         
-        content = filtered_content
-        logger.info(f"✅ 内容过滤通过 - 过滤后内容: {content}")
+        # 创建消息对象并存储
+        message_with_timestamp = {
+            'timestamp': int(time.time() * 1000),  # 毫秒时间戳
+            'data': message_data
+        }
         
-        # 提取用户名并格式化TTS内容
-        user_name = message_data.get('user', {}).get('nickName', '未知用户') if message_data else '未知用户'
-        tts_content = f"用户：{user_name}，发送弹幕：{content}"
-        logger.info(f"🎤 TTS内容格式化完成 - 用户: {user_name}, 完整内容: {tts_content}")
-        
-        # 检查缓存，如果命中则立即存储
-        cache_enabled = TTS_CACHE_SIZE > 0
-        if cache_enabled:
-            cached_result = _tts_cache.get(tts_content)
-            if cached_result:
-                audio_datas, audio_duration, audio_size = cached_result
-                logger.info(f"📦 TTS缓存命中，立即存储消息 - 内容: {tts_content}")
-                
-                # 创建完整的消息对象并立即存储
-                message_with_timestamp = {
-                    'timestamp': int(time.time() * 1000),
-                    'data': message_data,
-                    'audio_datas': audio_datas,
-                    'audio_duration': audio_duration,
-                    'audio_size': audio_size,
-                    'tts_status': 'cached'
-                }
-                
-                with cls._lock:
-                    message_array.insert(0, message_with_timestamp)
-                    if len(message_array) > cls.MAX_MESSAGE_COUNT:
-                        message_array.pop()
-                    logger.info(f"💾 缓存消息已存储 - 内容: {tts_content}, 数组长度: {len(message_array)}")
-                return
-        
-        # 异步提交TTS任务（不立即存储消息，等TTS完成后再存储）
-        task_id = _async_tts_manager.submit_tts_task(
-            message_id=None,  # 不需要消息ID，因为不预先存储
-            content=tts_content,
-            message_data=message_data,
-            message_array=message_array
-        )
-        
-        if task_id:
-            logger.info(f"🚀 异步TTS任务已提交，等待完成后存储 - 内容: {tts_content}, 任务ID: {task_id[:8]}")
-        else:
-            logger.warning(f"⚠️ TTS任务提交失败（队列已满），消息未存储 - 内容: {tts_content}")
-            # 任务提交失败，不存储消息
-
-
-    
-    @classmethod
-    def update_chat_message(cls, message_data):
-        """更新最新的普通消息（异步处理TTS）"""
-        # 添加调试日志
-        content = message_data.get('content', '') if message_data else ''
-        logger.info(f"📝 开始处理弹幕消息: {content}")
-        cls._add_chat_message_with_tts_async(cls.chat_messages, message_data)
+        with cls._lock:
+            message_array.insert(0, message_with_timestamp)
+            if len(message_array) > cls.MAX_MESSAGE_COUNT:
+                message_array.pop()
+            logger.info(f"💾 聊天消息已存储 - 内容: {content}, 数组长度: {len(message_array)}")
     
     @classmethod
     def update_gift_message(cls, message_data):
@@ -544,6 +484,14 @@ class GlobalVal(object):
         """更新最新的成员进入消息"""
         with cls._lock:
             cls._add_message_to_array(cls.member_messages, message_data)
+    
+    @classmethod
+    def update_chat_message(cls, message_data):
+        """更新最新的普通消息（移除TTS处理）"""
+        # 添加调试日志
+        content = message_data.get('content', '') if message_data else ''
+        logger.info(f"📝 开始处理弹幕消息: {content}")
+        cls._add_chat_message(cls.chat_messages, message_data)
     
     @classmethod
     def get_latest_chat_message(cls):

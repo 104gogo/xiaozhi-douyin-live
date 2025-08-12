@@ -9,7 +9,7 @@ LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
 # 直播信息配置：直播地址，直播用户排名，直播排名抓取间隔，直播推送到后台，推送到后台地址
 # LIVE_ROOM_URL = "https://live.douyin.com/211953907443"
 # LIVE_ROOM_URL = "https://live.douyin.com/497723294501"
-LIVE_ROOM_URL = "https://live.douyin.com/16729606047"
+LIVE_ROOM_URL = "https://live.douyin.com/34019938734"
 
 
 # 特殊礼物单独统计
