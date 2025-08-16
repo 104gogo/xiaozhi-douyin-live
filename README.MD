@@ -1,6 +1,8 @@
 # 介绍
 这是一个小智直播服务端开源项目，仅供学习使用。
 
+B站教程：https://www.bilibili.com/video/BV1mwtfzPEZi
+文档：https://icnt94i5ctj4.feishu.cn/docx/J66Vd6g9KoVsIkx7rx2cUPewnRe
 交流群：120146442
 
 # 运行步骤
