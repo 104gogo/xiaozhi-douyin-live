@@ -1,3 +1,8 @@
+# 介绍
+这是一个小智直播服务端开源项目，仅供学习使用。
+
+交流群：120146442
+
 # 运行步骤
 
 ## 安装依赖
@@ -13,7 +18,9 @@ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/f
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
 
 conda install libopus -y
+conda install ffmpeg -y
 
+# 进入项目目录执行
 pip install -r requirements.txt
 ```
 
@@ -41,6 +48,10 @@ CUSTOM_TOPICS = [
 
 ## 运行
 ```
+# 进入虚拟环境
+conda activate xiaozhi-douyin-live
+
+# 进入项目目录执行
 python main.py
 ```
 
